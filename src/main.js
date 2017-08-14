@@ -6,6 +6,8 @@ import router from './router'
 import $ from 'jquery/src/jquery'
 import './assets/bootstrap/css/bootstrap.min.css'
 import './assets/bootstrap/js/bootstrap.min'
+import Es6Promise from 'es6-promise'
+Es6Promise.polyfill()
 
 Vue.config.productionTip = false
 
