@@ -3,7 +3,7 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-const Hello = resolve => require (['@/components/Hello'], resolve)
+const Home = resolve => require (['@/page/Home'], resolve)
 const NotFoundComponent = resolve => require (['@/page/404'], resolve)
 export default new Router({
   routes: [
@@ -11,7 +11,7 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Hello
+      component: Home
     }
   ]
 })
