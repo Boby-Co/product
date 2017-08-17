@@ -8,20 +8,18 @@ const state = {
   isLoading: false,
   mode: 'desktop',
   locationList: [
-    {text: 'All', isChecked: true}, {text: 'Auckland', isChecked: false}, {
+    {text: 'All', isChecked: true, showSuburb: false}, {text: 'Auckland', isChecked: false, showSuburb: false}, {
       text: 'Chirstchurch',
-      isChecked: false
+      isChecked: false, showSuburb: false
     },
-    {text: 'Wellington', isChecked: false}, {text: 'Northland', isChecked: false}, {
+    {text: 'Wellington', isChecked: false, showSuburb: false}, {text: 'Northland', isChecked: false, showSuburb: false}, {
       text: 'Hamilton',
-      isChecked: false
+      isChecked: false, showSuburb: false
     },
-    {text: 'Central Northisland', isChecked: false}, {text: 'Tauranga', isChecked: false}, {
+    {text: 'Central Northisland', isChecked: false, showSuburb: false}, {text: 'Tauranga', isChecked: false, showSuburb: false}, {
       text: 'South Island',
-      isChecked: false
-    },
-    {text: 'CBD', isChecked: false}, {text: 'Suburb2', isChecked: false}, {text: 'Suburb3', isChecked: false},
-    {text: 'Suburb4', isChecked: false}, {text: 'Suburb5', isChecked: false}
+      isChecked: false, showSuburb: false
+    }
   ],
   preferenceList: [
     {text: 'All', isChecked: true}, {text: 'Love Grils', isChecked: false}, {text: 'Love Guys', isChecked: false},

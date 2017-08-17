@@ -4,3 +4,9 @@ html, body {
   font-size: 20px;
   background: #F5F5F5;
 }
+
+.nowrap-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

@@ -10,7 +10,6 @@ import $ from 'jquery/src/jquery'
 import './assets/bootstrap/css/bootstrap.min.css'
 import './assets/bootstrap/js/bootstrap.min'
 import './style/base.css'
-import './style/font-awesome-4.7.0/css/font-awesome.min.css'
 import Es6Promise from 'es6-promise'
 Es6Promise.polyfill()
 

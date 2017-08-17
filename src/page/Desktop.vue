@@ -26,6 +26,10 @@
               <div class="label">
                 <h5>My Filter:</h5>
               </div>
+              <ul class="filter-info list-inline">
+                <li v-for="(item, index) in finalFilters" :key="index"><h6 v-text="item.filterName"></h6><i
+                  @click="removeFilter(item.type)" class="fa fa-times"></i></li>
+              </ul>
             </div>
             <div class="right col-md-2">
               <button><h6>Apply my filters</h6></button>
@@ -33,12 +37,12 @@
           </div>
           <div class="clearfix"></div>
           <div class="check-item">
-            <div class="label">
+            <div class="label" @click="showAllLocations = !showAllLocations" style="cursor: pointer;">
               <h5>Location:</h5>
             </div>
             <ul class="check list-inline">
-              <li @click="selected(item, $event)" :class="{selected: item.isChecked}"
-                  v-for="(item, index) in locationFilter" :key="index"><h6 v-text="item.text"></h6></li>
+              <li @click="selected( 'Location', locationList, item, index)" :class="{selected: item.isChecked}"
+                  v-for="(item, index) in locationList" :key="index"><h6 v-text="item.text"></h6></li>
             </ul>
           </div>
           <div class="clearfix"></div>
@@ -47,7 +51,7 @@
               <h5>Preference:</h5>
             </div>
             <ul class="check list-inline">
-              <li @click="selected(item, $event)" :class="{selected: item.isChecked}"
+              <li @click="selected('Preference', preferenceList, item, index)" :class="{selected: item.isChecked}"
                   v-for="(item, index) in preferenceList" :key="index"><h6 v-text="item.text"></h6></li>
             </ul>
           </div>
@@ -57,7 +61,7 @@
               <h5>Nationality:</h5>
             </div>
             <ul class="check list-inline">
-              <li @click="selected(item, $event)" :class="{selected: item.isChecked}"
+              <li @click="selected('Nationality', nationalityFilter, item, index)" :class="{selected: item.isChecked}"
                   v-for="(item, index) in nationalityFilter" :key="index"><h6 v-text="item.text"></h6></li>
             </ul>
             <div class="more" @click="showMore=!showMore"><h6 v-text="showMore?'Show Less':'More'"></h6></div>
@@ -69,7 +73,7 @@
                 <h5>Massage/Full Service:</h5>
               </div>
               <ul class="check list-inline" style="width: 80%">
-                <li @click="selected(item, $event)" :class="{selected: item.isChecked}"
+                <li @click="selected('Massage/Full Service', massage, item, index)" :class="{selected: item.isChecked}"
                     v-for="(item, index) in massage" :key="index"><h6 v-text="item.text"></h6></li>
               </ul>
             </div>
@@ -79,7 +83,7 @@
                 <h5>Age:</h5>
               </div>
               <ul class="check list-inline">
-                <li @click="selected(item, $event)" :class="{selected: item.isChecked}"
+                <li @click="selected('Age', age, item, index)" :class="{selected: item.isChecked}"
                     v-for="(item, index) in age" :key="index"><h6 v-text="item.text"></h6></li>
               </ul>
             </div>
@@ -161,7 +165,7 @@
         <div class="banner">
           <img :src="showModel.pearsonShow" alt="">
           <div class="summary">
-            <h2 v-text="showModel.summary"></h2>
+            <h2 class="nowrap-ellipsis" v-text="showModel.summary"></h2>
             <i @click="attention(showModel)" class="fa fa-heart" :class="{attention: showModel.isAttention}"
                aria-hidden="true"><span v-text="showModel.attention"></span></i>
           </div>
@@ -307,34 +311,79 @@
         show: false,
         showModel: null,
         index: 0,
-        showMore: false
+        showMore: false,
+        showAllLocations: false,
+        filters: {
+          'Location': [],
+          'Preference': [],
+          'Nationality': [],
+          'Massage/Full Service': [],
+          'Age': []
+        }
       }
     },
     computed: {
-      ...mapState({
-        locationList : state=>state.locationList,
-        preferenceList : state=>state.preferenceList,
-        nationalityList : state=>state.nationalityList,
-        massage : state=>state.massage,
-        age : state=>state.age,
-        cardList : state=>state.cardList
+      ...mapState ({
+        locationList: state => state.locationList,
+        preferenceList: state => state.preferenceList,
+        nationalityList: state => state.nationalityList,
+        massage: state => state.massage,
+        age: state => state.age,
+        cardList: state => state.cardList
       }),
-      locationFilter() {
-        return this.showMore ? this.locationList : this.locationList.slice(0, 9)
+      nationalityFilter () {
+        return this.showMore ? this.nationalityList : this.nationalityList.slice (0, 9)
       },
-      nationalityFilter() {
-        return this.showMore ? this.nationalityList : this.nationalityList.slice(0, 9)
+      finalFilters () {
+        let finalFilters = []
+
+        for (let i = 0, keys = Object.keys (this.filters); i < keys.length; i++) {
+          let key = keys[i],
+            arr = this.filters[key]
+          if (arr.length > 0) {
+            finalFilters.push ({
+              'type': key,
+              'filterName': key + ': ' + (arr.sort ((a, b) => {
+                return a.index - b.index
+              }).map ((v, i, a) => {
+                return v.filterName
+              })).join (',')
+            })
+          }
+        }
+
+        return finalFilters
       }
     },
     methods: {
       search () {
         console.log (this.searchModel)
       },
-      selected (item, e) {
+      selected (type, items, item, index) {
+        if (item.text == 'All') {
+          items.map ((value, index, arr) => {
+            value.isChecked = false
+            this.filters[type] = []
+          })
+          item = items[0]
+        } else {
+          if (item.isChecked) {
+            this.filters[type].splice(this.filters[type].findIndex((v) => {
+              return v.filterName == item.text
+            }), 1)
+          }
+          else {
+            this.filters[type].push ({'index': index, 'filterName': item.text})
+          }
+        }
+
         item.isChecked = !item.isChecked
       },
+      removeFilter (type) {
+        this.filters[type] = []
+      },
       loadMore () {
-        this.$emit('loadMore')
+        this.$emit ('loadMore')
       },
       attention (item) {
         item.isAttention = !item.isAttention
@@ -364,6 +413,32 @@
       },
       goTop () {
         $ ('body,html').animate ({scrollTop: 0}, 500);
+      },
+      getListByType(type) {
+        let items = null
+        switch (type) {
+          case 'Location':
+            items = this.locationList
+            break
+
+          case 'Preference':
+            items = this.preferenceList
+            break
+
+          case 'Nationality':
+            items = this.nationalityList
+            break
+
+          case 'Massage/Full Service':
+            items = this.massage
+            break
+
+          case 'Age':
+            items = this.age
+            break
+        }
+
+        return items
       }
     }
   }
@@ -466,6 +541,25 @@
     line-height: 2rem;
     color: #101010;
     text-align: justify;
+  }
+
+  .desktop section .filter .filter-info li {
+    margin-left: .5rem;
+    height: 1.3rem;
+    background: #c6c6c6;
+    border-radius: 1.3rem;
+    line-height: 1.1rem;
+  }
+
+  .desktop section .filter .filter-info li h6 {
+    display: inline-block;
+  }
+
+  .desktop section .filter .filter-info li i {
+    font-size: .7rem;
+    margin-left: .3rem;
+    cursor: pointer;
+    color: #A2A2A2;
   }
 
   .desktop section .check-list {
