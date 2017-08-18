@@ -538,6 +538,7 @@
   header {
     width: 100%;
     height: 2rem;
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=1, startColorstr=#FF5625, endColorstr=#FF3D6C); /* IE 9 */
     background: -webkit-linear-gradient(left, rgb(255, 86, 37), rgb(255, 61, 108)); /* Safari 5.1 - 6.0 */
     background: -o-linear-gradient(right, rgb(255, 86, 37), rgb(255, 61, 108)); /* Opera 11.1 - 12.0 */
     background: -moz-linear-gradient(right, rgb(255, 86, 37), rgb(255, 61, 108)); /* Firefox 3.6 - 15 */

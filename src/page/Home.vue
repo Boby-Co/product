@@ -2,8 +2,8 @@
   <div id="home">
     <!--<Desktop v-if="this.mode=='desktop'" :locationList="locationList" :preferenceList="preferenceList" :nationalityList="nationalityList" :massage="massage" :age="age"></Desktop>-->
     <!--<Mobile v-else :locationList="locationList" :preferenceList="preferenceList" :nationalityList="nationalityList" :massage="massage" :age="age" ></Mobile>-->
-    <Desktop v-if="this.mode=='desktop'" @loadMore="loadMore"></Desktop>
-    <Mobile v-else @loadMore="loadMore"></Mobile>
+    <Desktop v-if="this.mode=='desktop'" @loadMore="loadMore" ref="desktop"></Desktop>
+    <Mobile v-else @loadMore="loadMore" ref="mobile"></Mobile>
   </div>
 </template>
 
